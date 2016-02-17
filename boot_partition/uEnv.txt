@@ -1,9 +1,4 @@
-console=tty0
-root=/dev/nand2
-nand_root=/dev/nand2
-loadbootscript=false
-extraargs=console=ttyS0,115200 audio=EDID:0 disp.screen0_output_mode=EDID:1280x1024p60 \
-          rootwait panic=60 rootfstype=ext4
-script=script.bin
-kernel=uImage
-machid=0x10bb
+set_bootargs=setenv bootargs console=${console} loglevel=${loglevel} ${extraargs}
+load_script=fatload nand 0:0 ${scriptbinaddr} ${scriptbin}
+load_kernel=fatload nand 0:0 ${kerneladdr} ${kernel}
+boot_restore=run set_bootargs load_script load_kernel; bootm 48000000
