@@ -1138,7 +1138,7 @@ int     stage_2         (libusb_device_handle *handle, uchar *buf)
     install_boot1 (handle, buf);
     install_boot0 (handle, buf);
 
-    restore_system (handle, buf);
+    //restore_system (handle, buf);
 
     printf ("End of stage 2\n");
 
