@@ -1,4 +1,0 @@
-set_bootargs=setenv bootargs console=${console} loglevel=${loglevel} ${extraargs}
-load_script=fatload nand 0:0 ${scriptbinaddr} ${scriptbin}
-load_kernel=fatload nand 0:0 ${kerneladdr} ${kernel}
-boot_restore=run set_bootargs load_script load_kernel; bootm 48000000
