@@ -220,6 +220,7 @@ int     ShowUSBSpeed            (libusb_device_handle *handle)
 
 libusb_device_handle*   open_usb    (int bFailAllowed = 0)
 {
+    int n = 5;
     while (0 == (handle = libusb_open_device_with_vid_pid (NULL, 0x1f3a, 0xefe8)))
       {
         if (bFailAllowed)
@@ -234,8 +235,17 @@ libusb_device_handle*   open_usb    (int bFailAllowed = 0)
                 fprintf (stderr, "ERROR: Allwinner USB FEL device not found\n");
                 break;
           }
-        if (GetYesNo ((char *) "Retry USB device access") != 'y')
-            exit (1);
+
+        if (n == 0)
+          {
+            if (GetYesNo ((char *) "Retry USB device access") != 'y')
+                exit (1);
+          }
+        else
+          {
+            n--;
+            usleep(500000);
+          }
       }
 
     rc = libusb_claim_interface (handle, 0);            // claim interface
@@ -1136,7 +1146,7 @@ int     stage_2         (libusb_device_handle *handle, uchar *buf)
     install_boot1 (handle, buf);
     install_boot0 (handle, buf);
 
-    restore_system (handle, buf);
+    //restore_system (handle, buf);
 
     printf ("End of stage 2\n");
 
