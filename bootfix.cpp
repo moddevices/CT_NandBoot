@@ -77,6 +77,14 @@
 
 #include <types.h>
 #include <unistd.h>
+
+#ifdef __APPLE__
+ #define fopen64 fopen
+ #define fseeko64 fseeko
+ #define ftello64 ftello
+ #define off64_t off_t
+#endif
+
 #include "usbfel.inc"
 #include <sys/termios.h>
 
