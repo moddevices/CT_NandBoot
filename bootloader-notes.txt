@@ -1,0 +1,22 @@
+A small note regarding the bootloader (sun7i/boot0 and sun7i/boot1).
+Both binaries include the script.bin file inside, so they need to be adjusted per device.
+
+==== boot0
+
+The sun7i/boot0 file is encrypted, with the original unencrypted file living in the mod-livesuit-image project.
+Even though the source code for boot0 is available, we cannot compile it (requires a custom chinese one, not gcc).
+mod-livesuit-image patches in the MOD Duo fex file into boot0, then encrypts it when generating the livesuit image.
+
+The extraction of the encrypted boot0 file can be done with awimage, in https://github.com/Ithamar/awutils.
+(build of some tools fail, but awimage should be ok with gcc4)
+After dumping the contents of the livesuit image, the file 'BOOT    _BOOT0_0000000000' is the boot0 encrypted binary.
+
+=== boot1
+
+The sun7i/boot1 file is not encrypted, and we're able to modify and build it.
+The source code lives at https://github.com/moddevices/allwinner-boot/
+(note that by default the makefile does not patch-in the fex file, only when 'make all && make patch' is run)
+The boot1 binary is created in ./workspace/egon/boot1_nand.bin
+
+When modifying boot1 code, you must copy the generated fex-*unpatched* binary to <mod-livesuit-image>/resources/boot1_nand.fex.
+Also, you must copy the generated fex-*patched* binary to <CT_NandBoot>/sun7i/boot1_nand.fex.
