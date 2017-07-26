@@ -467,14 +467,14 @@ int     install_fes_1_1 (libusb_device_handle *handle, uchar *buf)
         pDI->dram_baseaddr   = 0x40000000;                  // from CT script.fex
         pDI->dram_clk        = 432;
         pDI->dram_type       = 3;
-        pDI->dram_rank_num   = 0xFFFFFFFF;
-        pDI->dram_chip_density = 0xFFFFFFFF;
-        pDI->dram_io_width   = 0xFFFFFFFF;
-        pDI->dram_bus_width  = 0xFFFFFFFF;
+        pDI->dram_rank_num   = 1;
+        pDI->dram_chip_density = 8192;
+        pDI->dram_io_width   = 16;
+        pDI->dram_bus_width  = 32;
         pDI->dram_cas        = 9;
         pDI->dram_zq         = 0x7f;
         pDI->dram_odt_en     = 0;
-        pDI->dram_size       = 0xFFFFFFFF;
+        pDI->dram_size       = 1024;
         pDI->dram_tpr0       = 0x42d899b7;
         pDI->dram_tpr1       = 0xa090;
         pDI->dram_tpr2       = 0x22a00;
@@ -745,11 +745,13 @@ int     GetConfigRec        (uchar *buf, bool bEraseReqd)
     if (IsA10 (version))
         return len;
 
+#if 0
     pInfo->dram_rank_num     = 0xFFFFFFFF;
     pInfo->dram_chip_density = 0xFFFFFFFF;
     pInfo->dram_io_width     = 0xFFFFFFFF;
     pInfo->dram_bus_width    = 0xFFFFFFFF;
     pInfo->dram_size         = 0xFFFFFFFF;
+#endif
 
 //  if (CB2_mode)
 //      buf [0x218] = 0x04;
@@ -1140,10 +1142,16 @@ int     stage_2         (libusb_device_handle *handle, uchar *buf)
         PutAllNAND (handle, NAND_FID, 0, 0);
     else if (loadNAND == 1)                                 // MBR and partitions
         LoadNAND (handle, part_cnt, part_name, part_start, part_secs);
+#if 0
     else 
         send_partitions_and_MBR (handle, buf);              // not done yet !!!
+#endif
 
     install_boot1 (handle, buf);
+    install_boot1 (handle, buf);
+    install_boot1 (handle, buf);
+    install_boot0 (handle, buf);
+    install_boot0 (handle, buf);
     install_boot0 (handle, buf);
 
     //restore_system (handle, buf);
